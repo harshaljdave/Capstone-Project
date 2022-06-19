@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+<title>{% block title %}Closed Listings{% endblock %}</title>
+{% block body %}
+    <h2 class="ap">Closed Listings</h2>
+    <table width = 100%>
+        {% for item in closed %}
+            <div>
+                <tr>
+                    <td width = 10%>
+                        <img src="{{item.image.url}}" alt = "image not Provided" height = 200px width = 200px><br>
+                    </td>
+                    <td style = "padding : 25px">
+                        <h4>{{  item.title }}</h4><br>
+                        Owner : {{ item.owner }}<br>
+                        winner : {{ item.user }}<br>
+                        winning bid : ₹{{  item.winbid  }}<br>
+                    <td>
+                </tr>
+            </div>
+        {% endfor %}
+    </table>
+{% endblock %}

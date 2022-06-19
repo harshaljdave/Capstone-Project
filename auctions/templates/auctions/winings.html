@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Items Won{% endblock %}
+
+{% block body %}
+    <table width = 100%>
+        {% for item in won_items %}
+            <div>
+                <tr>
+                    <td width = 10%>
+                        <img src="{{item.image.url}}" alt = "image not Provided" height = 200px width = 200px><br>
+                    </td>
+                    <td style = "padding : 25px">
+                        <h4>{{  item.title }}</h4><br>
+                        Owner : {{ item.owner }}<br>
+                    winning bid(by you) :₹ {{  item.winbid  }}<br>
+                    <td>
+                </tr>
+            </div>
+        {% endfor %}
+    </table>
+{% endblock %}

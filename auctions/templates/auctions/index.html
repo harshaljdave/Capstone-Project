@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+<title>{% block title %}Auctions{% endblock %}</title>
+{% block body %}
+<h2 class="ap">Active Listings</h2>
+    <table width = 100%>
+    {% for i in page_obj %}
+        <div>        
+            <tr>
+                <td width = 10%>
+                        <img src="{{i.image.url}}" height = 200px width = 200px>
+                </td>
+                <td style = "padding : 25px">
+                    <a href={% url 'listing' i.pk %} style = "color:black"><h4>{{  i.title }}</h4></a><br>
+                    {{  i.description }}<br>
+                    ₹{{i.sbid}}<br>
+                    {% if i.category %}
+                        {{  i.category  }}
+                    {% else %}
+                        Category not provided
+                    {% endif %}
+                <td>
+            </tr>
+        </div>
+    {% endfor %}
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+<form action = "{% url 'viewcategory'%}" method = "post">
+    {% csrf_token %}
+    {{form.category}}
+   <input type=submit value=ok></input>
+</form>
+
+<table width = 100%>
+    {% for i in sorted %}
+        <div>
+            <tr>
+                <td width = 10%>
+                    <img src="{{i.image.url}}" height = 200px width = 200px>
+                </td>
+                <td style = "padding : 25px">
+                    <a href={% url 'listing' i.pk %} style = "color:black"><h4>{{  i.title }}</h4></a><br>
+                    {{  i.description }}<br>
+                    ₹{{ i.sbid }}
+                    {% if i.category %}
+                        {{  i.category  }}
+                    {% else %}
+                        uncategorized
+                    {% endif %}
+                <td>
+            </tr>
+        </div>
+    {% empty %}
+    no listing in category
+    {% endfor %}
+    </table>
+{% endblock %}

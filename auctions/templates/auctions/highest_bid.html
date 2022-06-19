@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+<title>{% block title %}Highest bidded item{% endblock %}</title>
+{% block body %}
+
+<form action="{% url 'highest_bid' %}" method="post">
+    {% csrf_token %}
+    <input type="date" name="sdate" required><br><br>
+    <input type="date" name="edate" required><br><br>
+    <input type="radio" name = "type" value="Active" required> Active listings &nbsp&nbsp&nbsp
+    <input type="radio" name = "type" value="Closed" required> Closed listings <br><br>
+    <input type="submit">
+</form>
+
+{% if abids%}
+    <table>
+        {% for bid in abids %}
+        <tr>
+            <td style = "padding : 10px">{{bid.title}}</td>
+            <td style = "padding : 10px">{{bid.sbid}}</td>
+            <td style = "padding : 10px">{{bid.times_bidded}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% if cbids%}
+    <table>
+        {% for bid in cbids %}
+        <tr>
+            <td style = "padding : 10px">{{bid.title}}</td>
+            <td style = "padding : 10px">{{bid.winbid}}</td>
+            <td style = "padding : 10px">{{bid.times_bidded}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+{% endblock %}

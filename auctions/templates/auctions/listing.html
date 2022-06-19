@@ -1,0 +1,78 @@
+{% extends "auctions/layout.html" %}
+
+<title>{% block title %}{{ data.title }}{% endblock %}</title>
+
+{% block body %}
+  {% if message %}
+      <div style="text-align:center;color : White; background-color : red">{{message}}</div><br>
+  {% endif %}
+
+  <h3 style="text-align:center">{{ data.title }}</h3><br>
+  <img src = "{{ data.image.url }}" height = "700vh" width = "93%"  style="margin:0px 50px" alt = "Image Not Provided">
+  <br><br>
+  <p style="font-size:large">
+  Item details :<b> {{ data.description }}</b><br>
+  Auction by :<b> {{ data.owner }}</b>
+  </p>
+
+  <form action="{% url 'watchlist' %}" method="post">
+    {% csrf_token %}
+    <input type='hidden' value = {{ data.pk }} name = "lid">
+    {% if added %}
+      <button type=submit class="btn btn-outline-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+        </svg>
+      </button>
+    {% else %}
+      <button type=submit class="btn btn-outline-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+        </svg>
+      </button>
+    {% endif %}
+  </form>
+  <br>
+ 
+  <h4>Current bid: ₹{{ data.sbid }}</h4>  <br>  
+
+  {% if request.user  == data.owner %}
+    <form  action="{% url 'closebid' %}" method="post">
+    {% csrf_token %}
+    <input type='hidden' value = {{ data.pk }} name = "lid">
+    <input type=submit class="btn btn-warning" value = "Close Bid"></button>
+    </form>
+  {% else %}
+    <form action="{% url 'listing' data.pk %}" method = "post">
+      {% csrf_token %}
+      {{ bidform }} <br>
+      <input type=submit value=bid class="btn btn-success"></button>
+    </form>
+  {% endif %}
+
+  <br>
+  Comment as <strong> {{ request.user.username }}</strong>
+  <form action="{% url 'comment' data.pk %}" method = "post">
+    {% csrf_token %}
+      {% for field in commentform.visible_fields %}
+      {{field.label_tag}}<br>
+      {{field}}<br>
+    {% endfor %}
+    <input type=submit value=comment button type="button" class="btn btn-success"></button>
+  </form>
+  <br>
+
+{{email}}
+
+
+  <h5>All comments:</h5>
+  {% for c in all_comments %}
+  <div style = "border :1px solid; padding: 5px; spacing : 5px; border-radius:5px; width:60%">
+      {{c.user}}:<br> 
+     {{c.comment}}<br>
+    </div>
+    <br>
+  {% empty %}
+    No comments yet
+  {% endfor %}
+{% endblock %}

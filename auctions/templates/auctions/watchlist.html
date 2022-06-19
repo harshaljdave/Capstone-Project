@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}My Watchlist{% endblock %}
+
+{% block body %}
+    <table width = 100%>
+        {% for item in items %}
+            {% for i in item %}
+                <div>
+                    <tr>
+                        <td width = 10%>
+                            <img src="{{i.image.url}}" height = 200px width = 200px>
+                        </td>
+                        <td style = "padding : 25px">
+                            <a href={% url 'listing' i.pk %} style = "color:black"><h4>{{  i.title }}</h4></a><br>
+                            {{  i.description }}<br>
+                            ₹{{ i.sbid }} <br>
+                            {% if i.category %}
+                                {{  i.category  }}
+                            {% else %}
+                                Category not provided
+                            {% endif %}
+                        <td>
+                    </tr>
+                </div>
+            {% endfor %}  
+            {% empty %}
+            Nothing added to wishlist
+        {% endfor %}
+    </table>
+{% endblock %}
